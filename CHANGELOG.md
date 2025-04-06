@@ -1,5 +1,4 @@
 ## 06-04-2025
-### Initial
 ### Added
 - Readme.md
 - CHANGELOG.md
