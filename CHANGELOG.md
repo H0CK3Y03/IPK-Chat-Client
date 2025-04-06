@@ -1,0 +1,13 @@
+## 06-04-2025
+### Initial
+### Added
+- Readme.md
+- CHANGELOG.md
+- Makefile
+- LICENSE
+- project2.sln
+- src/Program.cs
+- src/ArgParser
+- src/Debugger.cs
+- src/project2.csproj
+- .gitignore

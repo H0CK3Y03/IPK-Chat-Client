@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType> <!-- executable file as opposed to a class library, which would be used if you wanted to create a DLL -->
+    <TargetFramework>net8.0</TargetFramework> <!-- application will be compiled and run using the .NET 8.0 runtime -->
+    <ImplicitUsings>enable</ImplicitUsings> <!-- implicit using directives, meaning you do not have to manually add using directives at the top of your files for common namespaces like System, System.Linq, etc. They are automatically included by the compiler -->
+    <Nullable>enable</Nullable> <!-- nullable reference types in the project, which is a feature that helps prevent NullReferenceException by requiring you to explicitly mark nullable reference types in the code. This improves code safety by enforcing null checks -->
+    <AssemblyName>ipk25-chat</AssemblyName> <!-- name of the assembly that will be generated when the project is built -->
+    <!-- <RootNamespace>hello</RootNamespace> root namespace for the project, which is used as a prefix for all namespaces in the project -->
+    <PublishSingleFile>true</PublishSingleFile> <!-- This indicates that when publishing the application, it should be packaged into a single file. This simplifies the distribution process since the application will be a single .exe or .app file (for Linux or macOS) rather than multiple files -->
+    <DebugType>none</DebugType> <!-- This indicates that no debug symbols should be generated. This is typically used for release builds where you do not want to include debugging information in the final output like .pdb files -->
+  </PropertyGroup>
+
+</Project>

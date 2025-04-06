@@ -1,0 +1,4 @@
+obj/
+bin/
+secret_token.txt
+ipk25chat-client
