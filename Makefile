@@ -1,5 +1,6 @@
 # Set the name of the project
 PROJECT_NAME = ipk25-chat
+SRC = src/
 
 # Define the output directory for the published files
 # OUTPUT_DIR = ./ipk25-chat
@@ -17,7 +18,7 @@ publish:
 
 # Clean the build artifacts (bin, obj, and publish directories)
 clean:
-	rm -rf src/bin src/obj $(PROJECT_NAME)
+	rm -rf $(PROJECT_NAME) $(SRC)bin $(SRC)obj
 
 # Restore NuGet packages (optional, but can be useful if there are package updates)
 restore:
