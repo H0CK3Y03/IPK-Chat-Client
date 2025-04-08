@@ -2,7 +2,7 @@
 ### Added
 - More functionality to Debugger.cs for printing
 - TCPClient.cs and partial functionality
-- ITrasnportClient.cs as an interface for TCP and UDP client variations
+- ITransportClient.cs as an interface for TCP and UDP client variations
 ### Updated
 - .gitignore
 - Makefile
