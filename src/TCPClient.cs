@@ -90,10 +90,8 @@ public class TcpChatClient : ITransportClient
     // Disconnect gracefully by sending a "BYE" message and closing the connection
     public async Task DisconnectAsync()
     {
-        string byeMessage = "BYE FROM localUser";
-        await SendAsync(byeMessage);  // Send the disconnection message asynchronously
-
         _tcpClient?.Close(); // Properly close the TcpClient connection
-        Debugger.PrintStatus("Disconnected.");
+        Debugger.PrintStatus("Disconnected from server.");
+        await Task.CompletedTask; // Ensure the method is properly asynchronous
     }
 }

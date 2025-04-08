@@ -34,8 +34,6 @@ public class CommandParser
         }
         else if (input.StartsWith("/help"))
         {
-            // Print help message
-            Debugger.PrintHelp();
             return new ParsedCommand { Type = CommandType.Help };
         }
         else if (input.StartsWith("/error"))
@@ -54,7 +52,7 @@ public class CommandParser
             return new ParsedCommand { Type = CommandType.Invalid };
         //  Splint string into /auth username secret displayName
         var parts = arg.Split(' ', 4);
-        if (parts == null || parts.Length != 3) 
+        if (parts == null || parts.Length != 4) 
             return new ParsedCommand { Type = CommandType.Invalid };
 
         var username = parts[1];

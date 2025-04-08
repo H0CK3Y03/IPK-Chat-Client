@@ -48,6 +48,7 @@ public class Debugger
         /msg <message>
         /bye
         /help
+        /error <message>
         """);
     }
 }
