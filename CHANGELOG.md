@@ -4,6 +4,7 @@
 - TCPClient.cs and partial functionality
 - ITransportClient.cs as an interface for TCP and UDP client variations
 - ClientMessageBuilder.cs to construct messages for sending to the server
+- CommandParser.cs to parse user input during runtime
 ### Updated
 - .gitignore
 - Makefile
