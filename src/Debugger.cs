@@ -4,23 +4,50 @@ public class Debugger
 
     public static void PrintError(string message)
     {
-        Console.Error.WriteLine($"ERROR: {message}");
+        if (DebugMode)
+        {
+            Console.Error.WriteLine($"ERROR: {message}");
+        }
     }
 
     public static void PrintWarning(string message)
     {
-        Console.WriteLine($"WARNING: {message}");
+        Console.Error.WriteLine($"WARNING: {message}");
+    }
+
+    public static void PrintStatus(string message)
+    {
+        if (DebugMode)
+        {
+            Console.WriteLine($"STATUS: {message}");
+        }
     }
 
     public static void PrintInfo()
     {
+        if (DebugMode)
+        {
+            Console.WriteLine($"""
+            INFO:
+            Transport Protocol   : {ArgParser.TransportProtocol}
+            Server/IP Address    : {ArgParser.ServerAddress}
+            Port                 : {ArgParser.Port}
+            UDP Timeout          : {ArgParser.Timeout} ms
+            UDP Retransmissions  : {ArgParser.Retransmissions}
+            """);
+        }
+    }
+
+    public static void PrintHelp()
+    {
         Console.WriteLine($"""
-        INFO:
-          Transport Protocol   : {ArgParser.TransportProtocol}
-          Server/IP Address    : {ArgParser.ServerAddress}
-          Port                 : {ArgParser.Port}
-          UDP Timeout          : {ArgParser.Timeout} ms
-          UDP Retransmissions  : {ArgParser.Retransmissions}
+        HELP:
+        /auth <username> <secret> <displayname>
+        /join <channelid>
+        /rename <displayname>
+        /msg <message>
+        /bye
+        /help
         """);
     }
 }
