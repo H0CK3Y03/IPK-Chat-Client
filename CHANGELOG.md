@@ -2,6 +2,7 @@
 ### Added
 - ReadUserInputAsyn() function to ClientMessageBuilder.cs
 - ChatClientFSM.cs [only start state is functional]
+- CancellationSource.cs -> uses a bool to help exit the FSM when server or user sends a connection terminating message (like /bye)
 ### Updated
 - Debugger.cs PrintHelp() function
 ### Changed
