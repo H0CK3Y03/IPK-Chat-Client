@@ -62,7 +62,7 @@ public class TcpChatClient : ITransportClient
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine($"[ERROR] Failed to send message: {ex.Message}");
+            Debugger.PrintError($"Failed to send message: {ex.Message}");
         }
     }
 
@@ -82,7 +82,7 @@ public class TcpChatClient : ITransportClient
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine($"[ERROR] Failed to receive message: {ex.Message}");
+            Debugger.PrintError($"Failed to receive message: {ex.Message}");
             return null;
         }
     }
@@ -94,6 +94,6 @@ public class TcpChatClient : ITransportClient
         await SendAsync(byeMessage);  // Send the disconnection message asynchronously
 
         _tcpClient?.Close(); // Properly close the TcpClient connection
-        Console.WriteLine("[INFO] Disconnected.");
+        Debugger.PrintStatus("Disconnected.");
     }
 }
