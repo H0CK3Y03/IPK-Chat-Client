@@ -24,27 +24,27 @@ public class CommandParser
             }
             return new ParsedCommand { Type = CommandType.Msg, Content = input };
         }
-        if (input.StartsWith("/auth"))
+        if (input.ToLower().StartsWith("/auth"))
         {
             return authCommandArgParser(input);
         }
-        else if (input.StartsWith("/join"))
+        else if (input.ToLower().StartsWith("/join"))
         {
             return joinCommandArgParser(input);
         }
-        else if (input.StartsWith("/rename"))
+        else if (input.ToLower().StartsWith("/rename"))
         {
             return renameCommandArgParser(input);
         }
-        else if (input.StartsWith("/bye"))
+        else if (input.ToLower().StartsWith("/bye"))
         {
             return new ParsedCommand { Type = CommandType.Bye };
         }
-        else if (input.StartsWith("/help"))
+        else if (input.ToLower().StartsWith("/help"))
         {
             return new ParsedCommand { Type = CommandType.Help };
         }
-        else if (input.StartsWith("/error"))
+        else if (input.ToLower().StartsWith("/error"))
         {
             return new ParsedCommand { Type = CommandType.Error };
         }
