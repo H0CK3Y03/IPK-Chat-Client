@@ -19,7 +19,7 @@ public class Debugger
     {
         if (DebugMode)
         {
-            Console.WriteLine($"STATUS: {message}");
+            Console.Error.WriteLine($"STATUS: {message}");
         }
     }
 

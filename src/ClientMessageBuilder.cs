@@ -8,7 +8,7 @@ public class ClientMessageBuilder
         });
     }
     public static string BuildAuth(string username, string displayName, string secret) =>
-        $"AUTH {username} AS {displayName} USING {secret}\r\n";
+        $"AUTH {Truncate(username, 20)} AS {Truncate(displayName, 20)} USING {secret}\r\n";
 
     public static string BuildJoin(string channelId, string displayName) =>
         $"JOIN {channelId} AS {displayName}\r\n";
