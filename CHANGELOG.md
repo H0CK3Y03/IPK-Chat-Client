@@ -1,3 +1,16 @@
+## 19-04-2025
+### Added
+- Message handling when receiving messages from server
+- Regex checks to all messages
+- Ctrl + C termination
+### Updated
+- .gitignore
+- Message handling to be case insensitive
+### Changed
+- Debugger.cs to print status in stderr instead of stdin
+### Fixed
+- Makefile (executable file name)
+---
 ## 09-04-2025
 ### Added
 - ReadUserInputAsyn() function to ClientMessageBuilder.cs

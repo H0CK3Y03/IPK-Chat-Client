@@ -12,7 +12,7 @@ public class Debugger
 
     public static void PrintWarning(string message)
     {
-        Console.Error.WriteLine($"WARNING: {message}");
+        Console.WriteLine($"WARNING: {message}");
     }
 
     public static void PrintStatus(string message)
