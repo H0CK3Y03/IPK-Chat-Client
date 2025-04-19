@@ -1,11 +1,11 @@
 # Set the name of the project
-PROJECT_NAME = ipk25-chat
+PROJECT_NAME = ipk25chat-client
 SRC = src/
 
 # Define the output directory for the published files
 # OUTPUT_DIR = ./ipk25-chat
 
-# Define the target runtime (you can adjust this as needed)
+# Define the target runtime
 RUNTIME = linux-x64
 
 # Default target: clean and publish the project
@@ -13,7 +13,7 @@ all: clean publish
 
 # Publish the application as a single file
 publish:
-	dotnet publish -r $(RUNTIME) -c Release -o .
+	dotnet publish $(SRC)/project2.csproj -r $(RUNTIME) -c Release -o .
 # able to add /p:PublishSingleFile=true to the end instead of going into csproj and defning it there
 
 # Clean the build artifacts (bin, obj, and publish directories)

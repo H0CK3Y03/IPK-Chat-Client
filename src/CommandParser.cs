@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 public class CommandParser
 {
     public enum CommandType { Auth, Msg, Join, Rename, Bye, Help, Error, Invalid }
@@ -5,7 +7,7 @@ public class CommandParser
     public class ParsedCommand
     {
         public CommandType Type;
-        public string? Payload;
+        public string? Content;
         public string? Username;
         public string? DisplayName;
         public string? Secret;
@@ -14,8 +16,14 @@ public class CommandParser
 
     public ParsedCommand Parse(string input)
     {
-        if (!input.StartsWith("/")) return new ParsedCommand { Type = CommandType.Msg, Payload = input };
-
+        if (!input.StartsWith("/"))
+        {
+            if (MatchRegex(input, @"^[\x0A\x20-\x7E]{1,60000}$") == null)
+            {
+                return new ParsedCommand { Type = CommandType.Invalid };
+            }
+            return new ParsedCommand { Type = CommandType.Msg, Content = input };
+        }
         if (input.StartsWith("/auth"))
         {
             return authCommandArgParser(input);
@@ -54,10 +62,12 @@ public class CommandParser
         var parts = arg.Split(' ', 4);
         if (parts == null || parts.Length != 4) 
             return new ParsedCommand { Type = CommandType.Invalid };
-
-        var username = parts[1];
-        var secret = parts[2];
-        var displayName = parts[3];
+        // Check if username, secret and displayName are valid
+        var username = MatchRegex(parts[1], @"^[A-Za-z0-9_-]{1,20}$");
+        var secret = MatchRegex(parts[2], @"^[A-Za-z0-9_-]{1,128}$");
+        var displayName = MatchRegex(parts[3], @"^[\x21-\x7E]{1,20}$");
+        if (username == null || secret == null || displayName == null) 
+            return new ParsedCommand { Type = CommandType.Invalid };
 
         return new ParsedCommand { Type = CommandType.Auth, Username = username, Secret = secret, DisplayName = displayName };
     }
@@ -70,8 +80,10 @@ public class CommandParser
         var parts = arg.Split(' ', 2);
         if (parts == null || parts.Length != 2) 
             return new ParsedCommand { Type = CommandType.Invalid };
-
-        var channelId = parts[1];
+        // Check if channelId is valid
+        var channelId = MatchRegex(parts[1], @"^[A-Za-z0-9_-]{1,20}$");
+        if (channelId == null) 
+            return new ParsedCommand { Type = CommandType.Invalid };
 
         return new ParsedCommand { Type = CommandType.Join, ChannelId = channelId };
     }
@@ -83,9 +95,16 @@ public class CommandParser
         var parts = arg.Split(' ', 2);
         if (parts == null || parts.Length != 2) 
             return new ParsedCommand { Type = CommandType.Invalid };
-
-        var displayName = parts[1];
+        // Check if displayName is valid
+        var displayName = MatchRegex(parts[1], @"^[\x21-\x7E]{1,20}$");
+        if (displayName == null) 
+            return new ParsedCommand { Type = CommandType.Invalid };
 
         return new ParsedCommand { Type = CommandType.Rename, DisplayName = displayName };
+    }
+    public static string? MatchRegex(string message, string pattern)
+    {
+        var match = Regex.Match(message, pattern);
+        return match.Success ? match.Value : null;
     }
 }

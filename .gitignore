@@ -1,6 +1,6 @@
 obj/
 bin/
 secret_token.txt
-ipk25-chat
+ipk25chat-client
 personal_thoughts.txt
 -p

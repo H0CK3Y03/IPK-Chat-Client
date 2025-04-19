@@ -22,6 +22,6 @@ public class ClientMessageBuilder
     public static string BuildBye(string displayName) =>
         $"BYE FROM {displayName}\r\n";
 
-    private static string Truncate(string input, int maxLength) =>
+    public static string Truncate(string input, int maxLength) =>
         input.Length > maxLength ? input.Substring(0, maxLength) : input;
 }
