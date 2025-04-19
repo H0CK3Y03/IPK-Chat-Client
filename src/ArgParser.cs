@@ -78,7 +78,7 @@ public class ArgParser
     private static void PrintHelp()
     {
         Console.WriteLine("Usage: ./ipk25-client -t <tcp|udp> -s <address> [-p <port>] [-d <timeout>] [-r <retries>] [-h] [-g]");
-        Console.WriteLine("-t <tcp|udp>   : Transport protocol (required, default: tcp)");
+        Console.WriteLine("-t <tcp|udp>   : Transport protocol (required)");
         Console.WriteLine("-s <address>   : Server IP or hostname (required)");
         Console.WriteLine("-p <port>      : Server port (default: 4567)");
         Console.WriteLine("-d <timeout>   : UDP confirmation timeout in ms (default: 250)");

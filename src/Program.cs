@@ -19,9 +19,23 @@ class Program
 
             // string? serverResponse = await transportClient.ReceiveAsync();  // Receive the response from the server
             // If connected successfully, start the FSM
-            CancellationTokenSource cts = new CancellationTokenSource();
-            CancellationToken token = cts.Token;
+            // CancellationTokenSource cts = new CancellationTokenSource();
+            // CancellationToken token = cts.Token;
             var fsm = new ChatClientFSM(transportClient);
+            // for Ctrl+c termination
+            Console.CancelKeyPress += (sender, e) =>
+            {
+                Debugger.PrintStatus("\nCtrl+C pressed. Exiting...");
+                // CancellationSource.Token.IsCancellationRequested = true;
+                CancellationSource.Cancel();
+                e.Cancel = true; // Cancel the default behavior (immediate exit)
+                Task.Run(async () =>
+                {
+                    await transportClient.DisconnectAsync();
+                    Debugger.PrintStatus("Disconnected. Exiting...");
+                });
+                Environment.Exit(0);
+            };
             await fsm.RunAsync();
         }
         catch (Exception ex)
