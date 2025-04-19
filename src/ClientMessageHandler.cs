@@ -8,7 +8,7 @@ public class ClientMessageHandler
         public string? Content;
         public string? DisplayName;
     }
-    public static ParsedMessage HandleMessage(string message)
+    public ParsedMessage HandleMessage(string message)
     {
         if (string.IsNullOrWhiteSpace(message))
         {

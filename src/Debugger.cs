@@ -4,15 +4,12 @@ public class Debugger
 
     public static void PrintError(string message)
     {
-        if (DebugMode)
-        {
-            Console.Error.WriteLine($"ERROR: {message}");
-        }
+            Console.WriteLine($"ERROR: {message}\n");
     }
 
     public static void PrintWarning(string message)
     {
-        Console.WriteLine($"WARNING: {message}");
+        Console.Error.WriteLine($"WARNING: {message}");
     }
 
     public static void PrintStatus(string message)

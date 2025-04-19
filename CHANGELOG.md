@@ -6,6 +6,7 @@
 ### Updated
 - .gitignore
 - Message handling to be case insensitive
+- Start state for TCP, should be final
 ### Changed
 - Debugger.cs to print status in stderr instead of stdin
 ### Fixed

@@ -5,7 +5,7 @@ public class ChatClientFSM
     private readonly ITransportClient _client;
     private ClientState _state = ClientState.start;
 
-    public string _displayName = string.Empty;
+    public string _displayName = "unknown"; // unknown by default
     private Task<string?>? _receiveTask = null;
     private Task<string?>? _userInputTask = null;
 
@@ -83,29 +83,43 @@ public class ChatClientFSM
                 string? serverReply = await _receiveTask;
                 if (string.IsNullOrEmpty(serverReply))
                 {
-                    Debugger.PrintWarning("Server did not reply.");
+                    // Debugger.PrintError("Server did not reply.");
                     return;
                 }
                 else
                 {
                     Debugger.PrintStatus($"Server Reply: {serverReply}");
 
-                    // Check if server sends an error or BYE message.
-                    if (serverReply.StartsWith("ERR") || serverReply.StartsWith("BYE"))
+                    var receivedMessage = new ClientMessageHandler();
+                    var parsedMessage = receivedMessage.HandleMessage(serverReply);
+                    if (parsedMessage == null || parsedMessage.Type == ClientMessageHandler.CommandType.Malformed)
                     {
-                        Debugger.PrintStatus("Exiting due to server error or BYE message.");
+                        throw new Exception("Received malformed message.");
+                    }
+                    else if (parsedMessage.Type == ClientMessageHandler.CommandType.Bye)
+                    {
+                        Debugger.PrintStatus("BYE message received. Exiting...");
                         CancellationSource.Cancel();
                         _state = ClientState.end;
                         await EndStateAsync();
                         return;
+                    }
+                    else if (parsedMessage.Type == ClientMessageHandler.CommandType.Err)
+                    {
+                        Debugger.PrintStatus("ERR message received. Exiting...");
+                        throw new Exception($"{parsedMessage.Content}");
+                    }
+                    else
+                    {
+                        Debugger.PrintStatus($"Received message: {parsedMessage.Content}");
+                        // Do nothing
                     }
                 }
                 // Restart the receive task for the next message
                 _receiveTask = _client.ReceiveAsync();
             }
             // Check if the completed task is the user input task
-            else
-            if (completedTask == _userInputTask)
+            else if (completedTask == _userInputTask)
             {
                 // Process user input if it's received
                 string? userInput = await _userInputTask;
@@ -151,15 +165,8 @@ public class ChatClientFSM
                 }
                 if (parsed.Type == CommandParser.CommandType.Error)
                 {
-                    Debugger.PrintWarning("Error command entered. Exiting...");
-                    // Send error message to server of manually sent error
-                    string byeMsg = ClientMessageBuilder.BuildError(_displayName, parsed.Payload);
-                    await _client.SendAsync(byeMsg);
-                    // Cancel the operation and exit
-                    CancellationSource.Cancel();
-                    _state = ClientState.end;
-                    await EndStateAsync();
-                    return;
+                    Debugger.PrintStatus("Error command entered. Exiting...");
+                    throw new Exception($"{parsed.Content}");
                 }
                 if (parsed.Type == CommandParser.CommandType.Help)
                 {
@@ -189,7 +196,7 @@ public class ChatClientFSM
                 if (_receiveTask.IsCompleted)
                 {
                     string? serverReply = await _receiveTask;
-                    if (!string.IsNullOrEmpty(serverReply) && (serverReply.StartsWith("ERR") || serverReply.StartsWith("BYE")))
+                    if (!string.IsNullOrEmpty(serverReply) && (serverReply.ToLower().StartsWith("err") || serverReply.ToLower().StartsWith("bye")))
                     {
                         Debugger.PrintStatus("Exiting due to server error or BYE message.");
                         CancellationSource.Cancel();
