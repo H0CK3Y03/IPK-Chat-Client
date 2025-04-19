@@ -29,11 +29,8 @@ class Program
                 // CancellationSource.Token.IsCancellationRequested = true;
                 CancellationSource.Cancel();
                 e.Cancel = true; // Cancel the default behavior (immediate exit)
-                Task.Run(async () =>
-                {
-                    await transportClient.DisconnectAsync();
-                    Debugger.PrintStatus("Disconnected. Exiting...");
-                });
+                transportClient.SendAsync(ClientMessageBuilder.BuildBye(fsm._displayName));
+                transportClient.DisconnectAsync();
                 Environment.Exit(0);
             };
             await fsm.RunAsync();
