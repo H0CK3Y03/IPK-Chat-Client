@@ -9,22 +9,22 @@ public class Debugger
 
     public static void PrintReceivedError(string? message, string? displayName)
     {
-        Console.WriteLine($"ERROR FROM {displayName}: {message}\n");
+        Console.WriteLine($"ERROR FROM {displayName}: {message}");
     }
 
     public static void PrintReplyOK(string? message)
     {
-        Console.WriteLine($"Action Success: {message}\n");
+        Console.WriteLine($"Action Success: {message}");
     }
 
     public static void PrintReplyNOK(string? message)
     {
-        Console.WriteLine($"Action Failure: {message}\n");
+        Console.WriteLine($"Action Failure: {message}");
     }
 
     public static void PrintReceivedMessage(string? message, string? displayName)
     {
-        Console.WriteLine($"{displayName}: {message}\n");
+        Console.WriteLine($"{displayName}: {message}");
     }
 
     public static void PrintWarning(string message)
@@ -37,6 +37,8 @@ public class Debugger
         if (DebugMode)
         {
             Console.Error.WriteLine($"STATUS: {message}");
+            Console.Error.WriteLine($"<{message}> Length: {message.Length}");
+            Console.Error.WriteLine(string.Join("|", message.Select(c => ((int)c).ToString())));
         }
     }
 

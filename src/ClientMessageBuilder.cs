@@ -4,23 +4,23 @@ public class ClientMessageBuilder
     {
         return await Task.Run(() =>
         {
-            return Console.ReadLine() ?? string.Empty;
+            return Console.ReadLine();
         });
     }
     public static string BuildAuth(string username, string displayName, string secret) =>
-        $"AUTH {Truncate(username, 20)} AS {Truncate(displayName, 20)} USING {secret}\r\n";
+        $"AUTH {Truncate(username, 20)} AS {Truncate(displayName, 20)} USING {secret}";
 
     public static string BuildJoin(string channelId, string displayName) =>
-        $"JOIN {channelId} AS {displayName}\r\n";
+        $"JOIN {channelId} AS {displayName}";
 
     public static string BuildError(string displayName, string? content) =>
-        $"ERROR FROM {displayName} IS {content}\r\n";
+        $"ERR FROM {displayName} IS {content}";
 
     public static string BuildMsg(string displayName, string content) =>
-        $"MSG FROM {displayName} IS {Truncate(content, 60000)}\r\n";
+        $"MSG FROM {displayName} IS {Truncate(content, 60000)}";
 
     public static string BuildBye(string displayName) =>
-        $"BYE FROM {displayName}\r\n";
+        $"BYE FROM {displayName}";
 
     public static string Truncate(string input, int maxLength) =>
         input.Length > maxLength ? input.Substring(0, maxLength) : input;

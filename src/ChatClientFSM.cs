@@ -127,15 +127,26 @@ public class ChatClientFSM
             {
                 // Process user input if it's received
                 string? userInput = await _userInputTask;
-                while (string.IsNullOrEmpty(userInput) && !_receiveTask.IsCompleted)
+                while (userInput == "" && !_receiveTask.IsCompleted)
                 {
                     // Goes back into FSM and doesn't change state
-                    Debugger.PrintWarning("No input provided for auth.");
+                    Debugger.PrintError("No input provided for auth.");
                     return;
                 }
-                if (string.IsNullOrEmpty(userInput))
+                if (userInput == null)
                 {
-                    Debugger.PrintWarning("No input provided for auth.");
+                    Debugger.PrintStatus("STDIN closed (EOF). Sending BYE...");
+                    // Send BYE message to server
+                    string byeMsg = ClientMessageBuilder.BuildBye(_displayName);
+                    await _client.SendAsync(byeMsg);
+                    CancellationSource.Cancel();
+                    _state = ClientState.end;
+                    await EndStateAsync();
+                    return;
+                }
+                if (userInput == "")
+                {
+                    Debugger.PrintError("No input provided for auth.");
                     return;
                 }
                 // Parse user input command
@@ -143,7 +154,7 @@ public class ChatClientFSM
                 var parsed = command.Parse(userInput);
                 if (parsed == null)
                 {
-                    Debugger.PrintWarning("No Input.");
+                    Debugger.PrintError("No Input.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Bye)
@@ -160,7 +171,7 @@ public class ChatClientFSM
                 }
                 else if (parsed.Type == CommandParser.CommandType.Invalid)
                 {
-                    Debugger.PrintWarning("Invalid command. Please try again.");
+                    Debugger.PrintError("Invalid command. Please try again.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Error)
@@ -175,7 +186,7 @@ public class ChatClientFSM
                 }
                 else if (parsed.Type == CommandParser.CommandType.Msg)
                 {
-                    Debugger.PrintWarning("You need to be authenticated to send messages.");
+                    Debugger.PrintError("You need to be authenticated to send messages.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Rename)
@@ -187,7 +198,7 @@ public class ChatClientFSM
                 {
                     if (string.IsNullOrEmpty(parsed.Username) || string.IsNullOrEmpty(parsed.Secret) || string.IsNullOrEmpty(parsed.DisplayName))
                     {
-                        Debugger.PrintWarning("Invalid auth command. Please try again.");
+                        Debugger.PrintError("Invalid auth command. Please try again.");
                         return;
                     }
 
@@ -214,12 +225,12 @@ public class ChatClientFSM
                 }
                 else if (parsed.Type == CommandParser.CommandType.Join)
                 {
-                    Debugger.PrintWarning("You need to be authenticated to join a channel.");
+                    Debugger.PrintError("You need to be authenticated to join a channel.");
                     return;
                 }
                 else
                 {
-                    Debugger.PrintWarning("Invalid command. Please try again.");
+                    Debugger.PrintError("Invalid command. Please try again.");
                     return;
                 }
             }
@@ -326,16 +337,28 @@ public class ChatClientFSM
             {
                 // Process user input if it's received
                 string? userInput = await _userInputTask;
-                while (string.IsNullOrEmpty(userInput) && !_receiveTask.IsCompleted)
+                while (userInput == "" && !_receiveTask.IsCompleted)
                 {
                     // Goes back into FSM and doesn't change state
-                    Debugger.PrintWarning("No input provided for auth.");
+                    Debugger.PrintError("No input provided for auth.");
                     return;
                 }
 
-                if (string.IsNullOrEmpty(userInput))
+                if (userInput == null)
                 {
-                    Debugger.PrintWarning("No input provided for auth.");
+                    Debugger.PrintStatus("STDIN closed (EOF). Sending BYE...");
+                    // Send BYE message to server
+                    string byeMsg = ClientMessageBuilder.BuildBye(_displayName);
+                    await _client.SendAsync(byeMsg);
+                    CancellationSource.Cancel();
+                    _state = ClientState.end;
+                    await EndStateAsync();
+                    return;
+                }
+
+                if (userInput == "")
+                {
+                    Debugger.PrintError("No input provided for auth.");
                     return;
                 }
                 // Parse user input command
@@ -344,7 +367,7 @@ public class ChatClientFSM
 
                 if (parsed == null)
                 {
-                    Debugger.PrintWarning("No Input.");
+                    Debugger.PrintError("No Input.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Bye)
@@ -361,7 +384,7 @@ public class ChatClientFSM
                 }
                 else if (parsed.Type == CommandParser.CommandType.Invalid)
                 {
-                    Debugger.PrintWarning("Invalid command. Please try again.");
+                    Debugger.PrintError("Invalid command. Please try again.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Error)
@@ -376,7 +399,7 @@ public class ChatClientFSM
                 }
                 else if (parsed.Type == CommandParser.CommandType.Msg)
                 {
-                    Debugger.PrintWarning("You need to be authenticated to send messages.");
+                    Debugger.PrintError("You need to be authenticated to send messages.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Rename)
@@ -386,14 +409,14 @@ public class ChatClientFSM
                 }
                 else if (parsed.Type == CommandParser.CommandType.Join)
                 {
-                    Debugger.PrintWarning("You need to be authenticated to join a channel.");
+                    Debugger.PrintError("You need to be authenticated to join a channel.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Auth)
                 {
                     if (string.IsNullOrEmpty(parsed.Username) || string.IsNullOrEmpty(parsed.Secret) || string.IsNullOrEmpty(parsed.DisplayName))
                     {
-                        Debugger.PrintWarning("Invalid auth command. Please try again.");
+                        Debugger.PrintError("Invalid auth command. Please try again.");
                         return;
                     }
 
@@ -418,7 +441,7 @@ public class ChatClientFSM
                 }
                 else
                 {
-                    Debugger.PrintWarning("Invalid command. Please try again.");
+                    Debugger.PrintError("Invalid command. Please try again.");
                     return;
                 }
             }
@@ -520,16 +543,28 @@ public class ChatClientFSM
             {
                 // Process user input if it's received
                 string? userInput = await _userInputTask;
-                while (string.IsNullOrEmpty(userInput) && !_receiveTask.IsCompleted)
+                while (userInput == "" && !_receiveTask.IsCompleted)
                 {
                     // Goes back into FSM and doesn't change state
-                    Debugger.PrintWarning("No input provided for auth.");
+                    Debugger.PrintError("No input provided for auth.");
                     return;
                 }
 
-                if (string.IsNullOrEmpty(userInput))
+                if (userInput == null)
                 {
-                    Debugger.PrintWarning("No input provided for auth.");
+                    Debugger.PrintStatus("STDIN closed (EOF). Sending BYE...");
+                    // Send BYE message to server
+                    string byeMsg = ClientMessageBuilder.BuildBye(_displayName);
+                    await _client.SendAsync(byeMsg);
+                    CancellationSource.Cancel();
+                    _state = ClientState.end;
+                    await EndStateAsync();
+                    return;
+                }
+
+                if (userInput == "")
+                {
+                    Debugger.PrintError("No input provided for auth.");
                     return;
                 }
                 // Parse user input command
@@ -538,7 +573,7 @@ public class ChatClientFSM
 
                 if (parsed == null)
                 {
-                    Debugger.PrintWarning("No Input.");
+                    Debugger.PrintError("No Input.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Bye)
@@ -555,7 +590,7 @@ public class ChatClientFSM
                 }
                 else if (parsed.Type == CommandParser.CommandType.Invalid)
                 {
-                    Debugger.PrintWarning("Invalid command. Please try again.");
+                    Debugger.PrintError("Invalid command. Please try again.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Error)
@@ -572,7 +607,7 @@ public class ChatClientFSM
                 {
                     if (string.IsNullOrEmpty(parsed.Content))
                     {
-                        Debugger.PrintWarning("No message provided.");
+                        Debugger.PrintError("No message provided.");
                         return;
                     }
                     // Send message to server
@@ -590,7 +625,7 @@ public class ChatClientFSM
                 {
                     if (string.IsNullOrEmpty(parsed.ChannelId))
                     {
-                        Debugger.PrintWarning("No channel ID provided.");
+                        Debugger.PrintError("No channel ID provided.");
                         return;
                     }
                     string joinMsg = ClientMessageBuilder.BuildJoin(parsed.ChannelId, _displayName);
@@ -602,12 +637,12 @@ public class ChatClientFSM
                 }
                 else if (parsed.Type == CommandParser.CommandType.Auth)
                 {
-                    Debugger.PrintWarning("You are already authenticated.");
+                    Debugger.PrintError("You are already authenticated.");
                     return;
                 }
                 else
                 {
-                    Debugger.PrintWarning("Invalid command. Please try again.");
+                    Debugger.PrintError("Invalid command. Please try again.");
                     return;
                 }
             }
@@ -711,16 +746,28 @@ public class ChatClientFSM
             {
                 // Process user input if it's received
                 string? userInput = await _userInputTask;
-                while (string.IsNullOrEmpty(userInput) && !_receiveTask.IsCompleted)
+                while (userInput == "" && !_receiveTask.IsCompleted)
                 {
                     // Goes back into FSM and doesn't change state
-                    Debugger.PrintWarning("No input provided for auth.");
+                    Debugger.PrintError("No input provided for auth.");
                     return;
                 }
 
-                if (string.IsNullOrEmpty(userInput))
+                if (userInput == null)
                 {
-                    Debugger.PrintWarning("No input provided for auth.");
+                    Debugger.PrintStatus("STDIN closed (EOF). Sending BYE...");
+                    // Send BYE message to server
+                    string byeMsg = ClientMessageBuilder.BuildBye(_displayName);
+                    await _client.SendAsync(byeMsg);
+                    CancellationSource.Cancel();
+                    _state = ClientState.end;
+                    await EndStateAsync();
+                    return;
+                }
+
+                if (userInput == "")
+                {
+                    Debugger.PrintError("No input provided for auth.");
                     return;
                 }
                 // Parse user input command
@@ -729,7 +776,7 @@ public class ChatClientFSM
 
                 if (parsed == null)
                 {
-                    Debugger.PrintWarning("No Input.");
+                    Debugger.PrintError("No Input.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Bye)
@@ -746,7 +793,7 @@ public class ChatClientFSM
                 }
                 else if (parsed.Type == CommandParser.CommandType.Invalid)
                 {
-                    Debugger.PrintWarning("Invalid command. Please try again.");
+                    Debugger.PrintError("Invalid command. Please try again.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Error)
@@ -761,7 +808,7 @@ public class ChatClientFSM
                 }
                 else if (parsed.Type == CommandParser.CommandType.Msg)
                 {
-                    Debugger.PrintWarning("You can't send messages while joining a channel.");
+                    Debugger.PrintError("You can't send messages while joining a channel.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Rename)
@@ -772,17 +819,17 @@ public class ChatClientFSM
                 else if (parsed.Type == CommandParser.CommandType.Join)
                 {
                     // Do nothing
-                    Debugger.PrintWarning("You are already joining a channel.");
+                    Debugger.PrintError("You are already joining a channel.");
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Auth)
                 {
-                    Debugger.PrintWarning("You are already authenticated.");
+                    Debugger.PrintError("You are already authenticated.");
                     return;
                 }
                 else
                 {
-                    Debugger.PrintWarning("Invalid command. Please try again.");
+                    Debugger.PrintError("Invalid command. Please try again.");
                     return;
                 }
             }

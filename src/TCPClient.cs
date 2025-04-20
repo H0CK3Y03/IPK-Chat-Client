@@ -42,7 +42,7 @@ public class TcpChatClient : ITransportClient
     {
         _stream = _tcpClient?.GetStream();
         _reader = new StreamReader(_stream!, Encoding.UTF8);
-        _writer = new StreamWriter(_stream!, Encoding.UTF8) { NewLine = "\r\n", AutoFlush = true };
+        _writer = new StreamWriter(_stream!, new UTF8Encoding(false)) { NewLine = "\r\n", AutoFlush = true };
     }
 
     // Send a message asynchronously to the server

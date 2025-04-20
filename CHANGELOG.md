@@ -7,6 +7,8 @@
 - Additional prints to Debugger.cs to print replies and messages from the server
 ### Fixed
 - Certain actions in the start state to comply with the project specifications
+- Error printing during runtime
+- Message endings sent to the server from the client
 ### Notes
 - TCP now seems to be fully functional, udp is not yet implemented
 ---
