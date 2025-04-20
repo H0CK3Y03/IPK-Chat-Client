@@ -82,7 +82,7 @@ public class TcpChatClient : ITransportClient
         }
         catch (Exception ex)
         {
-            Debugger.PrintError($"Failed to receive message: {ex.Message}");
+            Debugger.PrintWarning($"Failed to receive message: {ex.Message}");
             return null;
         }
     }

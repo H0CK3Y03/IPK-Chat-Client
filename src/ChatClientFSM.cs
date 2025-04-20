@@ -1,13 +1,13 @@
-using System.Diagnostics;
-
 public class ChatClientFSM
 {
     private readonly ITransportClient _client;
-    private ClientState _state = ClientState.start;
+    public ClientState _state = ClientState.start;
 
     public string _displayName = "unknown"; // unknown by default
     private Task<string?>? _receiveTask = null;
     private Task<string?>? _userInputTask = null;
+
+    public Timer Timer = new();
 
     public enum ClientState
     {
@@ -209,6 +209,8 @@ public class ChatClientFSM
                     }
                     await _client.SendAsync(authMsg);
                     _state = ClientState.auth;
+                    // Start a timer to exit if no response is received within 5 seconds
+                    Timer.Start(5000, _displayName, _client, this);
                 }
                 else if (parsed.Type == CommandParser.CommandType.Join)
                 {
@@ -299,12 +301,14 @@ public class ChatClientFSM
                         Debugger.PrintStatus($"Received message: {parsedMessage.Content}");
                         Debugger.PrintReplyOK(parsedMessage.Content);
                         _state = ClientState.open;
+                        Timer.Cancel();
                         return;
                     }
                     else if (parsedMessage.Type == ClientMessageHandler.CommandType.ReplyNOK)
                     {
                         Debugger.PrintStatus($"Received message: {parsedMessage.Content}");
                         Debugger.PrintReplyNOK(parsedMessage.Content);
+                        Timer.Cancel();
                         // Do nothing
                         return;
                     }
@@ -410,6 +414,7 @@ public class ChatClientFSM
                         _receiveTask = _client.ReceiveAsync();
                     }
                     await _client.SendAsync(authMsg);
+                    Timer.Start(5000, _displayName, _client, this);
                 }
                 else
                 {
@@ -592,6 +597,7 @@ public class ChatClientFSM
                     await _client.SendAsync(joinMsg);
                     Debugger.PrintStatus($"Join command sent: {parsed.ChannelId}");
                     _state = ClientState.join;
+                    Timer.Start(5000, _displayName, _client, this);
                     return;
                 }
                 else if (parsed.Type == CommandParser.CommandType.Auth)
@@ -680,6 +686,7 @@ public class ChatClientFSM
                         Debugger.PrintStatus($"Received message: {parsedMessage.Content}");
                         Debugger.PrintReplyOK(parsedMessage.Content);
                         _state = ClientState.open;
+                        Timer.Cancel();
                         return;
                     }
                     else if (parsedMessage.Type == ClientMessageHandler.CommandType.ReplyNOK)
@@ -687,6 +694,7 @@ public class ChatClientFSM
                         Debugger.PrintStatus($"Received message: {parsedMessage.Content}");
                         Debugger.PrintReplyNOK(parsedMessage.Content);
                         _state = ClientState.open;
+                        Timer.Cancel();
                         return;
                     }
                     else
@@ -794,7 +802,7 @@ public class ChatClientFSM
     }
 
     // End state logic (disconnection)
-    private async Task EndStateAsync()
+    public async Task EndStateAsync()
     {
         Debugger.PrintStatus("Entered end state.");
         await _client.DisconnectAsync();

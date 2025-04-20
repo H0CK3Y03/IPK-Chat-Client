@@ -3,6 +3,7 @@
 - Auth state functionality for TCP
 - Open state functionality for TCP
 - Join state functionality for TCP
+- Timer functionality
 - Additional prints to Debugger.cs to print replies and messages from the server
 ### Fixed
 - Certain actions in the start state to comply with the project specifications
