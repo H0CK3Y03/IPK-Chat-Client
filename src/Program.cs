@@ -10,7 +10,7 @@ class Program
             ITransportClient transportClient = ArgParser.TransportProtocol switch
             {
                 "tcp" => new TcpChatClient(ArgParser.ServerAddress, ArgParser.Port),
-                // "udp" => new UdpChatClient(ArgParser.ServerAddress, ArgParser.Port, ArgParser.Timeout, ArgParser.Retransmissions),
+                "udp" => new UdpChatClient(ArgParser.ServerAddress, ArgParser.Port, ArgParser.Timeout, ArgParser.Retransmissions),
                 _ => throw new NotSupportedException($"Transport protocol {ArgParser.TransportProtocol} is not supported.")
             };
             // 1. connect to the server
