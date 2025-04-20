@@ -1,3 +1,10 @@
+## 20-04-2025
+### Added
+- Auth state functionality for TCP
+- Additional prints to Debugger.cs to print replies from the server
+### Fixed
+- Certain actions in the start state to comply with the project specifications
+---
 ## 19-04-2025
 ### Added
 - Message handling when receiving messages from server

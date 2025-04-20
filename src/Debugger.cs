@@ -7,6 +7,21 @@ public class Debugger
             Console.WriteLine($"ERROR: {message}\n");
     }
 
+    public static void PrintReceivedError(string? message, string? displayName)
+    {
+        Console.WriteLine($"ERROR FROM {displayName}: {message}\n");
+    }
+
+    public static void PrintReplyOK(string? message)
+    {
+        Console.WriteLine($"Action Success: {message}\n");
+    }
+
+    public static void PrintReplyNOK(string? message)
+    {
+        Console.WriteLine($"Action Failure: {message}\n");
+    }
+
     public static void PrintWarning(string message)
     {
         Console.Error.WriteLine($"WARNING: {message}");
