@@ -1,9 +1,13 @@
 ## 20-04-2025
 ### Added
 - Auth state functionality for TCP
-- Additional prints to Debugger.cs to print replies from the server
+- Open state functionality for TCP
+- Join state functionality for TCP
+- Additional prints to Debugger.cs to print replies and messages from the server
 ### Fixed
 - Certain actions in the start state to comply with the project specifications
+### Notes
+- TCP now seems to be fully functional, udp is not yet implemented
 ---
 ## 19-04-2025
 ### Added
