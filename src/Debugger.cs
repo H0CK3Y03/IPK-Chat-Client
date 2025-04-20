@@ -22,6 +22,11 @@ public class Debugger
         Console.WriteLine($"Action Failure: {message}\n");
     }
 
+    public static void PrintReceivedMessage(string? message, string? displayName)
+    {
+        Console.WriteLine($"{displayName}: {message}\n");
+    }
+
     public static void PrintWarning(string message)
     {
         Console.Error.WriteLine($"WARNING: {message}");
