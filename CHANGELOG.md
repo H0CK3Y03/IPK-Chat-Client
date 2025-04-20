@@ -7,6 +7,7 @@
 - Additional prints to Debugger.cs to print replies and messages from the server
 - Documentation in `Readme.md`
 - `zip` option to makefile
+- Non-functional UDPClient.cs
 ### Fixed
 - Certain actions in the start state to comply with the project specifications
 - Error printing during runtime

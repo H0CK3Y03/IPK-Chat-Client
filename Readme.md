@@ -78,6 +78,10 @@
         - Server sends either `REPLY OK IS FINE` (client prints: `Action Success: FINE`), `REPLY NOK IS NOT FINE` (client prints `Action Failure: NOT FINE`) or server waits 5s and client terminates the connection with an error message: `ERR FROM c IS ERROR: No reply from server. Exiting...\r\n`
         - If the reply received was `OK` and we have debugging enabled, we can see we have entered the `open` state. From here we can manually test interactions again.
 - Additional testing occured through publically available student tests (mentioned in the Bibliography section)
+- For `UDP` (currently non-functional) I used a similar approach, where I manually simulated all interactions:
+    - `sudo tcpdump -i lo udp port 4567 or src port 4567 -X` on one terminal
+    - `./ipk25chat-client -t udp -s 127.0.0.1` on a another terminal
+    - I then monitored the incoming packets on the "server" terminal, sadly I did not have enough time to debug and fix the issue. I will attempt to do so in the future.
 ---
 ## Bibliography
 [ChatGpt] OpenAI. ChatGpt (GPT-4) [online]. Used to help with Bibliographic citations and explanation of some harder-to-grasp concepts.
