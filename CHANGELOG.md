@@ -5,6 +5,7 @@
 - Join state functionality for TCP
 - Timer functionality
 - Additional prints to Debugger.cs to print replies and messages from the server
+- `zip` option to makefile
 ### Fixed
 - Certain actions in the start state to comply with the project specifications
 - Error printing during runtime
