@@ -62,11 +62,9 @@
 - `UDPClient.cs` is the UDP specific implementation of the `ITransportClient.cs` interface (currently non-functional)
 ---
 ## Implementation details
-### Functional
 - The `Program.cs` file initialises the `ArgParser`, `ITransportClient` and `ChatClientFSM` classes. It also monitors the `Ctrl + C` keypress, where it terminates the program gracefully. The majority of the program gets called by `await fsm.RunAsync()` which is the FSM
 - The `ChatClientFSM.cs` is responsible for changing states and expecting certain clinet/server behaviour for the given state. From here, there are calls made to the `TCPClient.cs` file and `UDPClient.cs` file. In each state the program reads user input and server messages asynchronously, allowing both to happen at the same time without any conflicts. Any errors are printed through the `Debugger` class along with any additional debugging information if the application is run with the `-g` or `--debug` flags.
 - The `TCPClient.cs` is responsible for the sending and reading of messages to and from the server. It takes pre-built messages using the `ClientMessageBuilder` class to correctly build all messages sent to the server. Any received messages from the server are passed to the `ClientMessageHandler` class to be parsed and handled in a required way
-### Non-Functional
 - Similarly to the `TCPClient.cs` file, the `UDPClient.cs` file handles the `UDP` version of the application, building UDP headers and handling dynamic ports according to received messages and user input. Both transport protocols use the same FSM.
 ---
 ## Testing
